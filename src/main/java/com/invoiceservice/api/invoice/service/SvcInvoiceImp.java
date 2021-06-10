@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+
+import org.springframework.data.mongodb.repository.Query;
+
 import com.invoiceservice.api.invoice.dto.DtoCustomer;
 import com.invoiceservice.api.invoice.dto.DtoProduct;
 import com.invoiceservice.api.invoice.entity.Invoice;
@@ -26,15 +29,23 @@ public class SvcInvoiceImp implements SvcInvoice {
 	@Autowired
 	RestTemplate restTemplate;
 	
+//	@Override
+//	public List<Invoice> getInvoices() {
+//		try {
+//			List<Invoice> invoices = repo.getInvoices();
+//			for(Invoice invoice: invoices) {
+//				setCostsInvoice(invoice);
+//			}
+//			return invoices;
+//			
+//		}catch(Exception e) {
+//			throw new ApiException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
+//		}
+//	}
 	@Override
-	public List<Invoice> getInvoices() {
+	public List<Invoice> getInvoices(){
 		try {
-			List<Invoice> invoices = repo.getInvoices();
-			for(Invoice invoice: invoices) {
-				setCostsInvoice(invoice);
-			}
-			return invoices;
-			
+			return repo.findAll();
 		}catch(Exception e) {
 			throw new ApiException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
 		}
@@ -68,11 +79,20 @@ public class SvcInvoiceImp implements SvcInvoice {
 		}
 	}
 
+//	@Override
+//	public void deleteInvoice(Integer id) {
+//		try {
+//			getInvoice(id);
+//			repo.deleteInvoice(id);
+//		}catch(Exception e) {
+//			throw new ApiException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
+//		}
+//	}
+	
 	@Override
 	public void deleteInvoice(Integer id) {
 		try {
-			getInvoice(id);
-			repo.deleteInvoice(id);
+			repo.deleteById(id);
 		}catch(Exception e) {
 			throw new ApiException(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
 		}
